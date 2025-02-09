@@ -1,0 +1,159 @@
+.team-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+}
+
+.team-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.member-image {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    position: relative;
+}
+
+.member-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.team-card:hover .member-image img {
+    transform: scale(1.05);
+}
+
+.member-info {
+    padding: var(--spacing-md);
+    text-align: center;
+}
+
+.member-info h3 {
+    font-family: var(--font-display);
+    margin: 0;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.role {
+    font-family: var(--font-primary);
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.bio {
+    font-family: var(--font-primary);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: var(--spacing-sm);
+}
+
+.social-links a {
+    color: white;
+    font-size: 1.2rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--accent-blue);
+    transform: translateY(-2px);
+}
+
+/* Add hover effect for social icons */
+.social-links a:hover i {
+    animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .member-image {
+        height: 250px;
+    }
+}
+
+/* Loading and error states */
+.loading-container,
+.error-container {
+    text-align: center;
+    padding: var(--spacing-lg);
+    color: white;
+}
+
+/* Add shimmer effect for loading state */
+.loading-shimmer {
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.05) 25%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(255, 255, 255, 0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.page-header h1 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+    color: white;
+    letter-spacing: 2px;
+}

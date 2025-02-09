@@ -13,12 +13,30 @@ const eventSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  location: {
+  time: {
+    type: String,
+    required: true
+  },
+  venue: {
     type: String,
     required: true
   },
   image: {
+    type: String,
+    required: true
+  },
+  registrationLink: {
     type: String
+  },
+  status: {
+    type: String,
+    enum: ['Upcoming', 'Ongoing', 'Completed'],
+    default: 'Upcoming'
+  },
+  category: {
+    type: String,
+    enum: ['Workshop', 'Seminar', 'Competition', 'Other'],
+    default: 'Other'
   }
 }, {
   timestamps: true

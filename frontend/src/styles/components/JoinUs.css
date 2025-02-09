@@ -1,0 +1,141 @@
+.join-us-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Benefits Section */
+.benefits-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.benefits-section h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+    font-size: 2rem;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.benefit-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: var(--spacing-md);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+}
+
+.benefit-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.benefit-card h3 {
+    margin-bottom: var(--spacing-sm);
+    color: white;
+}
+
+.benefit-card p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Form Styles */
+.join-form {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: var(--spacing-lg);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.join-form h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    font-size: 1.8rem;
+}
+
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 1rem;
+}
+
+.form-group select option {
+    background: var(--royal-blue);
+    color: white;
+}
+
+.interests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.interest-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.interest-checkbox input[type="checkbox"] {
+    accent-color: var(--accent-blue);
+}
+
+.submit-button {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(45deg, var(--royal-blue), var(--accent-blue));
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .join-form {
+        padding: var(--spacing-md);
+    }
+
+    .interests-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+}

@@ -8,13 +8,14 @@ import Projects from './components/Projects';
 import Blogs from './components/Blogs'; // Import Blogs component
 import Team from './components/Team';
 import JoinUs from './components/JoinUs';
-
-import './App.css';
+import AnimatedBackground from './components/AnimatedBackground';
+import './styles/globals.css';
 
 function App() {
   return (
     <Router>
       <div className="App">
+        <AnimatedBackground />
         <Navbar />
         <Routes>
           <Route path="/" element={<Hero />} />

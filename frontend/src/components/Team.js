@@ -1,74 +1,79 @@
-import React from 'react';
-import './Team.css'; // Create Team.css
-import Hero from './Hero'; // Import Hero component
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import '../styles/components/Team.css';
 
-function Team() {
-  const teamMembers = [
-    {
-      id: 1,
-      name: 'Shreekara B',
-      photo: '/assets/images/shreekara.jpg', // Replace with actual image path
-      github: 'Shreek1009', // Replace with actual GitHub username
-    },
-    {
-      id: 2,
-      name: 'Akkil M G',
-      photo: '/assets/images/akkil.jpg', // Replace with actual image path
-      github: 'AkkilMG', // Replace with actual GitHub username
-    },
-    {
-      id: 3,
-      name: 'Ashish Goswami',
-      photo: '/assets/images/ashish.jpg', // Replace with actual image path
-      github: 'Ashish6298', // Replace with actual GitHub username
-    },
-    {
-      id: 4,
-      name: 'Pradyumna P',
-      photo: '/assets/images/pradyumna.jpg', // Replace with actual image path
-      github: 'VoidGeek', // Replace with actual GitHub username
-    },
-    {
-      id: 5,
-      name: 'Skanda Ganesh P V',
-      photo: '/assets/images/skanda.jpg', // Replace with actual image path
-      github: 'Skandaganesh', // Replace with actual GitHub username
-    },
-    {
-      id: 6,
-      name: 'Keerthi Prasad Kalluraya',
-      photo: '/assets/images/keerthi.jpg', // Replace with actual image path
-      github: 'captmk', // Replace with actual GitHub username
-    },
-    {
-      id: 7,
-      name: 'Saiesh Savant',
-      photo: '/assets/images/saiesh.jpg', // Replace with actual image path
-      github: 'SaieshSavant', // Replace with actual GitHub username
-    },
-  ];
+const Team = () => {
+  const [team, setTeam] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchTeam();
+  }, []);
+
+  const fetchTeam = async () => {
+    try {
+      // This will work both locally and in production
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const response = await axios.get(`${API_URL}/api/team`);
+      console.log('Team data:', response.data);
+      setTeam(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch team members');
+      setLoading(false);
+      console.error('Error fetching team:', err);
+    }
+  };
+
+  if (loading) return <div className="page-container">Loading team...</div>;
+  if (error) return <div className="page-container">{error}</div>;
 
   return (
-    <section className="team-page">
-      <Hero />
-      <h2>Team Members</h2>
-      <div className="team-grid">
-        {teamMembers.map((member) => (
-          <div key={member.id} className="team-member">
-            <img src={member.photo} alt={member.name} className="team-photo" />
-            <h3>{member.name}</h3>
-            <a
-              href={`https://github.com/${member.github}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub
-            </a>
-          </div>
-        ))}
+    <div className="page-container">
+      <div className="page-header">
+        <h1>Our Team</h1>
+        <p>Meet the amazing people behind our community</p>
       </div>
-    </section>
+
+      <div className="team-container">
+        <div className="team-grid">
+          {team.map((member) => (
+            <div key={member._id} className="team-card">
+              <div className="member-image">
+                <img
+                  src={member.image || 'https://via.placeholder.com/150'}
+                  alt={member.name}
+                />
+              </div>
+              <div className="member-info">
+                <h3>{member.name}</h3>
+                <span className="role">{member.role}</span>
+                <p className="bio">{member.bio}</p>
+                <div className="social-links">
+                  {member.socialLinks?.github && (
+                    <a href={member.socialLinks.github} target="_blank" rel="noopener noreferrer">
+                      <i className="fab fa-github"></i>
+                    </a>
+                  )}
+                  {member.socialLinks?.linkedin && (
+                    <a href={member.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
+                      <i className="fab fa-linkedin"></i>
+                    </a>
+                  )}
+                  {member.socialLinks?.twitter && (
+                    <a href={member.socialLinks.twitter} target="_blank" rel="noopener noreferrer">
+                      <i className="fab fa-twitter"></i>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
 export default Team;

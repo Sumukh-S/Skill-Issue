@@ -1,47 +1,109 @@
-import React from 'react';
-import Hero from './Hero';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import '../styles/components/Projects.css';
 
-function Projects() {
-  const projects = [
-    {
-      id: 1,
-      title: 'Kulkunda Shree Basaveshwara Temple',
-      description: 'Website for Kulkunda Shree Basaveshwara Temple',
-      link: 'https://your-kulkunda-temple-website.com', // Replace with actual link
-    },
-    {
-      id: 2,
-      title: 'Harihareshwara Temple Hariharapallathadka',
-      description: 'Website for Harihareshwara Temple Hariharapallathadka.',
-      link: 'https://www.shriharihareshwara.org', // Replace with actual link
-    },
-    {
-      id: 3,
-      title: 'Shri Rama Seva Samithi Chokkadi',
-      description: 'Website for Shri Rama Seva Samithi Chokkadi.',
-      link: 'https://www.srtchokkadi.org', // Replace with actual link
-    },
-  ];
+const Projects = () => {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [expandedProject, setExpandedProject] = useState(null);
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const response = await axios.get(`${API_URL}/api/projects`);
+      setProjects(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch projects');
+      setLoading(false);
+      console.error('Error fetching projects:', err);
+    }
+  };
+
+  const toggleProject = (projectId) => {
+    if (expandedProject === projectId) {
+      setExpandedProject(null);
+    } else {
+      setExpandedProject(projectId);
+    }
+  };
+
+  if (loading) return <div className="page-container">Loading projects...</div>;
+  if (error) return <div className="page-container">{error}</div>;
 
   return (
-    <section className="projects-page">
-      <Hero />
-      <h2>Completed Projects</h2>
-      <ul className="event-list">
-        {projects.map((project) => (
-          <li key={project.id} className="event-item">
-            <h3>{project.title}</h3>
-            <p>
-                <a href={project.link} target="_blank" rel="noopener noreferrer">
-                  Visit Website
-                </a>
-              </p>
-            <p>{project.description}</p>
-          </li>
-        ))}
-      </ul>
-    </section>
+    <div className="page-container">
+      <div className="page-header">
+        <h1>Our Projects</h1>
+        <p>Explore our innovative solutions and developments</p>
+      </div>
+
+      <div className="projects-container">
+        <div className="projects-grid">
+          {projects.map((project) => (
+            <div
+              key={project._id}
+              className={`project-card ${expandedProject === project._id ? 'expanded' : ''}`}
+            >
+              {project.image && (
+                <div className="project-image">
+                  <img src={project.image} alt={project.title} />
+                </div>
+              )}
+              <div className="project-content">
+                <div className="project-header">
+                  <h3>{project.title}</h3>
+                  <div className="project-tags">
+                    {project.technologies?.map((tech, index) => (
+                      <span key={index} className="tech-tag">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className={`project-description ${expandedProject === project._id ? 'expanded' : ''}`}>
+                  <p>{project.description}</p>
+                </div>
+                <div className="project-actions">
+                  <button
+                    className="read-more-btn"
+                    onClick={() => toggleProject(project._id)}
+                  >
+                    {expandedProject === project._id ? 'Show Less' : 'Read More...'}
+                  </button>
+                  {project.websiteUrl && (
+                    <a
+                      href={project.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="view-website-btn"
+                    >
+                      <i className="fas fa-external-link-alt"></i> View Website
+                    </a>
+                  )}
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="github-btn"
+                    >
+                      <i className="fab fa-github"></i> View Code
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
 export default Projects;

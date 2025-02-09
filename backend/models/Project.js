@@ -9,16 +9,17 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  image: {
+    type: String,
+    required: true
+  },
   technologies: [{
     type: String
   }],
-  image: {
+  websiteUrl: {
     type: String
   },
-  githubLink: {
-    type: String
-  },
-  liveLink: {
+  githubUrl: {
     type: String
   }
 }, {

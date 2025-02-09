@@ -2,12 +2,18 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const teamRoutes = require('./routes/team');
+const blogRoutes = require('./routes/blogs');
+const announcementRoutes = require('./routes/announcements');
+const developerRoutes = require('./routes/developers');
+const eventRoutes = require('./routes/events');
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -20,11 +26,11 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 
 // Routes
-app.use('/api/announcements', require('./routes/announcements'));
-app.use('/api/events', require('./routes/events'));
-app.use('/api/blogs', require('./routes/blogs'));
-app.use('/api/projects', require('./routes/projects'));
-app.use('/api/team', require('./routes/team'));
+app.use('/api/team', teamRoutes);
+app.use('/api/blogs', blogRoutes);
+app.use('/api/announcements', announcementRoutes);
+app.use('/api/developers', developerRoutes);
+app.use('/api/events', eventRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

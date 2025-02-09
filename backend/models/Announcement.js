@@ -5,13 +5,28 @@ const announcementSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: {
+  content: {
     type: String,
     required: true,
   },
   date: {
     type: Date,
     default: Date.now,
+  },
+  category: {
+    type: String,
+    enum: ['General', 'Event', 'Important', 'Notice'],
+    default: 'General'
+  },
+  image: {
+    type: String
+  },
+  link: {
+    type: String
+  },
+  priority: {
+    type: Number,
+    default: 0
   }
 }, {
   timestamps: true

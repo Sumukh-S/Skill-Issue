@@ -1,51 +1,86 @@
 import React, { useState } from 'react';
-import Hero from './Hero';
-import './JoinUs.css';
+import '../styles/components/JoinUs.css';
 
-function JoinUs() {
+const JoinUs = () => {
   const [formData, setFormData] = useState({
     name: '',
-    semester: '',
-    section: '',
-    role: '',
-    whyConsider: '',
-    github: '',
-    linkedin: '',
+    email: '',
+    role: 'member', // Default role
+    interests: [],
+    message: ''
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here (e.g., send data to a backend)
-    console.log('Form Data:', formData); // For demonstration purposes
-    alert('Form submitted successfully!');
-    // Reset form fields after successful submission
-    setFormData({
-      name: '',
-      semester: '',
-      section: '',
-      role: '',
-      whyConsider: '',
-      github: '',
-      linkedin: '',
-    });
+  const handleInterestChange = (interest) => {
+    setFormData(prev => ({
+      ...prev,
+      interests: prev.interests.includes(interest)
+        ? prev.interests.filter(i => i !== interest)
+        : [...prev.interests, interest]
+    }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Add your form submission logic here
+    console.log('Form submitted:', formData);
+  };
+
+  const interests = [
+    'Web Development',
+    'Mobile Development',
+    'AI/ML',
+    'Blockchain',
+    'UI/UX Design',
+    'Cloud Computing'
+  ];
+
   return (
-    <section className="join-us-page">
-      <Hero />
-      <div className="join-us-form-container">
-        <h2>Join Our Community</h2>
-        <form onSubmit={handleSubmit}>
+    <div className="page-container">
+      <div className="page-header">
+        <h1>Join Our Community</h1>
+        <p>Be part of something extraordinary. Join us in shaping the future of technology.</p>
+      </div>
+
+      <div className="join-us-container">
+        <div className="benefits-section">
+          <h2>Why Join Us?</h2>
+          <div className="benefits-grid">
+            <div className="benefit-card">
+              <div className="benefit-icon">🚀</div>
+              <h3>Learn & Grow</h3>
+              <p>Access exclusive workshops, mentorship, and learning resources</p>
+            </div>
+            <div className="benefit-card">
+              <div className="benefit-icon">👥</div>
+              <h3>Network</h3>
+              <p>Connect with like-minded developers and industry professionals</p>
+            </div>
+            <div className="benefit-card">
+              <div className="benefit-icon">💡</div>
+              <h3>Innovate</h3>
+              <p>Work on exciting projects and bring your ideas to life</p>
+            </div>
+            <div className="benefit-card">
+              <div className="benefit-icon">🌟</div>
+              <h3>Opportunities</h3>
+              <p>Get access to internships, jobs, and collaboration opportunities</p>
+            </div>
+          </div>
+        </div>
+
+        <form className="join-form" onSubmit={handleSubmit}>
+          <h2>Apply Now</h2>
+
           <div className="form-group">
-            <label htmlFor="name">Name:</label>
+            <label htmlFor="name">Name</label>
             <input
               type="text"
               id="name"
@@ -57,91 +92,66 @@ function JoinUs() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="semester">Semester:</label>
-            <select
-              id="semester"
-              name="semester"
-              value={formData.semester}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Semester</option>
-              <option value="1">1st Semester</option>
-              <option value="2">2nd Semester</option>
-              <option value="3">3rd Semester</option>
-              <option value="4">4th Semester</option>
-              <option value="5">5th Semester</option>
-              <option value="6">6th Semester</option>
-              <option value="7">7th Semester</option>
-              <option value="8">8th Semester</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="section">Section:</label>
+            <label htmlFor="email">Email</label>
             <input
-              type="text"
-              id="section"
-              name="section"
-              value={formData.section}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="role">Interested Role:</label>
-            <input
-              type="text"
+            <label htmlFor="role">Role</label>
+            <select
               id="role"
               name="role"
               value={formData.role}
               onChange={handleChange}
-              required
-            />
+            >
+              <option value="member">Member</option>
+              <option value="developer">Developer</option>
+              <option value="designer">Designer</option>
+              <option value="mentor">Mentor</option>
+            </select>
           </div>
 
           <div className="form-group">
-            <label htmlFor="whyConsider">Why should we consider you for this role?</label>
+            <label>Areas of Interest</label>
+            <div className="interests-grid">
+              {interests.map(interest => (
+                <label key={interest} className="interest-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={formData.interests.includes(interest)}
+                    onChange={() => handleInterestChange(interest)}
+                  />
+                  <span>{interest}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="message">Why do you want to join?</label>
             <textarea
-              id="whyConsider"
-              name="whyConsider"
-              value={formData.whyConsider}
+              id="message"
+              name="message"
+              value={formData.message}
               onChange={handleChange}
               rows="4"
-              required
-            ></textarea>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="github">GitHub Profile URL:</label>
-            <input
-              type="url"
-              id="github"
-              name="github"
-              value={formData.github}
-              onChange={handleChange}
-              required
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="linkedin">LinkedIn Profile URL:</label>
-            <input
-              type="url"
-              id="linkedin"
-              name="linkedin"
-              value={formData.linkedin}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <button type="submit">Submit</button>
+          <button type="submit" className="submit-button">
+            Submit Application
+          </button>
         </form>
       </div>
-    </section>
+    </div>
   );
-}
+};
 
 export default JoinUs;

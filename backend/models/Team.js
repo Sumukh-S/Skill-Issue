@@ -10,14 +10,16 @@ const teamSchema = new mongoose.Schema({
     required: true
   },
   bio: {
-    type: String
+    type: String,
+    required: true
   },
   image: {
-    type: String
+    type: String,
+    required: true
   },
   socialLinks: {
-    linkedin: String,
     github: String,
+    linkedin: String,
     twitter: String
   }
 }, {
