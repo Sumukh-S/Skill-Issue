@@ -1,0 +1,13 @@
+{
+    "name": "isdc",
+    "version": "1.0.0",
+    "scripts": {
+        "install-client": "cd frontend && npm install",
+        "install-server": "cd backend && npm install",
+        "install": "npm run install-client && npm run install-server",
+        "build-client": "cd frontend && npm run build",
+        "start-server": "cd backend && node app.js",
+        "build": "npm run install && npm run build-client",
+        "start": "npm run start-server"
+    }
+}

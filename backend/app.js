@@ -1,12 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
-const teamRoutes = require('./routes/team');
-const blogRoutes = require('./routes/blogs');
-const announcementRoutes = require('./routes/announcements');
-const developerRoutes = require('./routes/developers');
-const eventRoutes = require('./routes/events');
 
 const app = express();
 
@@ -25,12 +21,20 @@ mongoose.connect(process.env.MONGODB_URI, {
     console.error('MongoDB connection error:', err);
 });
 
-// Routes
-app.use('/api/team', teamRoutes);
-app.use('/api/blogs', blogRoutes);
-app.use('/api/announcements', announcementRoutes);
-app.use('/api/developers', developerRoutes);
-app.use('/api/events', eventRoutes);
+// API Routes
+app.use('/api/team', require('./routes/team'));
+app.use('/api/blogs', require('./routes/blogs'));
+app.use('/api/announcements', require('./routes/announcements'));
+app.use('/api/developers', require('./routes/developers'));
+app.use('/api/events', require('./routes/events'));
+
+// Serve static files from the React build
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
