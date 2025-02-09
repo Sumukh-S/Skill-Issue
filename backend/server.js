@@ -1,23 +1,18 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-require('dotenv').config({ path: './config/.env' });
 
 const app = express();
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
-
-// Log environment variables to verify
-console.log('MONGO_URI:', process.env.MONGO_URI);
-console.log('PORT:', process.env.PORT);
+app.use(express.json());
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
 app.use('/api/developers', require('./routes/developers'));
