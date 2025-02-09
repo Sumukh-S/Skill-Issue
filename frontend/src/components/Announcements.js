@@ -1,82 +1,45 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function Announcements() {
+const Announcements = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Simulate fetching data from an API
-    const simulateApiCall = () => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const data = [
-            {
-              id: 1,
-              title: 'Upcoming Hackathon',
-              date: '2025-03-29',
-              message:
-                'Register now for our annual Hackathon! Prizes and workshops available. This is an important event!',
-            },
-            {
-              id: 2,
-              title: 'Guest Speaker: John Doe',
-              date: '2025-03-15',
-              message:
-                'Join us for a talk by renowned developer John Doe on advanced React techniques. Don\'t miss it!',
-            },
-            {
-              id: 3,
-              title: 'Community Meeting',
-              date: '2025-02-15',
-              message:
-                'Join our community to talk about our future plans, and get to know more members.',
-            },
-          ];
-          resolve(data);
-        }, 500); // Simulate a 500ms API call delay
-      });
-    };
-
-    const fetchAnnouncements = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await simulateApiCall();
-        setAnnouncements(data);
-      } catch (err) {
-        setError(err);
-        console.error('Error fetching announcements:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchAnnouncements();
   }, []);
 
-  if (loading) {
-    return <p>Loading announcements...</p>;
-  }
+  const fetchAnnouncements = async () => {
+    try {
+      // For Vercel deployment, use environment variable for API URL
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/announcements`);
+      setAnnouncements(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch announcements');
+      setLoading(false);
+      console.error('Error fetching announcements:', err);
+    }
+  };
 
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
+  if (loading) return <div>Loading announcements...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <section className="announcements">
+    <div className="announcements-container">
       <h2>Announcements</h2>
-      <ul className="announcement-list">
+      <div className="announcements-grid">
         {announcements.map((announcement) => (
-          <li key={announcement.id} className="announcement-item">
+          <div key={announcement._id} className="announcement-card">
             <h3>{announcement.title}</h3>
-            <p className="announcement-date">{announcement.date}</p>
-            <p>{announcement.message}</p>
-          </li>
+            <p>{announcement.description}</p>
+            <span className="date">{new Date(announcement.date).toLocaleDateString()}</span>
+          </div>
         ))}
-      </ul>
-    </section>
+      </div>
+    </div>
   );
-}
+};
 
 export default Announcements;
