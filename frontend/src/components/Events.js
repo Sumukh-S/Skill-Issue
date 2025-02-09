@@ -1,51 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function Events() {
-  // Sample event data (replace with your actual data source)
-  const events = [
-    {
-      id: 1,
-      title: 'Open Source Workshop',
-      date: '2025-03-10',
-      time: '14:00',
-      description: 'Learn the basics of contributing to open source projects.',
-      location: 'Online'
-    },
-    {
-      id: 2,
-      title: 'React.js Deep Dive',
-      date: '2025-03-15',
-      time: '10:00',
-      description: 'A deep dive into React.js concepts and best practices.',
-      location: 'Conference Room A'
-    },
-    {
-        id: 3,
-        title: 'Hackathon Prep Session',
-        date: '2025-03-22',
-        time: '16:00',
-        description: 'Get ready for the upcoming hackathon with tips and tricks.',
-        location: 'Innovation Lab'
-      }
-  ];
+const Events = () => {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/events`);
+      setEvents(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch events');
+      setLoading(false);
+      console.error('Error fetching events:', err);
+    }
+  };
+
+  if (loading) return <div>Loading events...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <section className="events">
+    <div className="events-container">
       <h2>Upcoming Events</h2>
-      <ul className="event-list">
-        {events.map(event => (
-          <li key={event.id} className="event-item">
+      <div className="events-grid">
+        {events.map((event) => (
+          <div key={event._id} className="event-card">
+            {event.image && (
+              <img src={event.image} alt={event.title} className="event-image" />
+            )}
             <h3>{event.title}</h3>
-            <p>Date: {event.date}</p>
-            <p>Time: {event.time}</p>
-            <p>Location: {event.location}</p>
             <p>{event.description}</p>
-            <button onClick={() => alert(`Registering for ${event.title}`)}>Register</button>
-          </li>
+            <div className="event-details">
+              <span className="date">
+                {new Date(event.date).toLocaleDateString()}
+              </span>
+              <span className="location">{event.location}</span>
+            </div>
+          </div>
         ))}
-      </ul>
-    </section>
+      </div>
+    </div>
   );
-}
+};
 
 export default Events;
