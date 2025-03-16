@@ -18,11 +18,20 @@ app.use(express.urlencoded({ extended: true }));
 // MongoDB Connection
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI);
+        const options = {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            bufferCommands: false,
+        };
+
+        await mongoose.connect(process.env.MONGODB_URI, options);
         console.log('Connected to MongoDB');
     } catch (err) {
         console.error('MongoDB connection error:', err);
-        process.exit(1);
+        // Don't exit the process in production
+        if (process.env.NODE_ENV !== 'production') {
+            process.exit(1);
+        }
     }
 };
 
