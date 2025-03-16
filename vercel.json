@@ -22,15 +22,5 @@
             "src": "/(.*)",
             "dest": "frontend/build/$1"
         }
-    ],
-    "env": {
-        "MONGODB_URI": "your-mongodb-connection-string",
-        "PORT": "5000",
-        "NODE_ENV": "production",
-        "REACT_APP_API_URL": "/api",
-        "JWT_SECRET": "your-jwt-secret",
-        "CLOUDINARY_CLOUD_NAME": "your-cloudinary-name",
-        "CLOUDINARY_API_KEY": "your-cloudinary-key",
-        "CLOUDINARY_API_SECRET": "your-cloudinary-secret"
-    }
+    ]
 }

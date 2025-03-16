@@ -13,6 +13,6 @@
         }
     ],
     "env": {
-        "MONGODB_URI": "your-mongodb-uri"
+        "MONGODB_URI": "mongodb+srv://sumukhs:Mongodb%40sumukh12@tcdb.lne9z.mongodb.net/isdc"
     }
 }
