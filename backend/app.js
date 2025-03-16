@@ -1,23 +1,24 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
 require('dotenv').config();
 
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production'
+        ? ['https://isdc.vercel.app', 'https://isdc-frontend.vercel.app']
+        : ['http://localhost:3000'],
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // MongoDB Connection
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        await mongoose.connect(process.env.MONGODB_URI);
         console.log('Connected to MongoDB');
     } catch (err) {
         console.error('MongoDB connection error:', err);
@@ -34,17 +35,9 @@ app.use('/api/announcements', require('./routes/announcements'));
 app.use('/api/developers', require('./routes/developers'));
 app.use('/api/events', require('./routes/events'));
 
-// Serve static files from the React build
-app.use(express.static(path.join(__dirname, '../frontend/build')));
-
-// Handle React routing, return all requests to React app
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
-});
-
 // Basic route for testing
 app.get('/', (req, res) => {
-    res.json({ message: 'Backend is running' });
+    res.json({ message: 'Backend API is running' });
 });
 
 // Error handling middleware
