@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const blogSchema = new mongoose.Schema({
   title: {
@@ -25,7 +25,8 @@ const blogSchema = new mongoose.Schema({
     type: String
   }]
 }, {
-  timestamps: true
+  timestamps: true,
+  collection: 'blogs'
 });
 
-module.exports = mongoose.model('Blog', blogSchema);
+export default mongoose.model('Blog', blogSchema);

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../utils/api';
 import '../styles/components/JoinUs.css';
 
 const JoinUs = () => {
@@ -8,6 +9,12 @@ const JoinUs = () => {
     role: 'member', // Default role
     interests: [],
     message: ''
+  });
+
+  const [submitStatus, setSubmitStatus] = useState({
+    loading: false,
+    error: null,
+    success: false
   });
 
   const handleChange = (e) => {
@@ -29,8 +36,29 @@ const JoinUs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log('Form submitted:', formData);
+    setSubmitStatus({ loading: true, error: null, success: false });
+
+    try {
+      const response = await api.post('/joinus', formData);
+      console.log('Form submitted successfully:', response.data);
+      setSubmitStatus({ loading: false, error: null, success: true });
+
+      // Clear form after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        role: 'member',
+        interests: [],
+        message: ''
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus({
+        loading: false,
+        error: 'Failed to submit form. Please try again.',
+        success: false
+      });
+    }
   };
 
   const interests = [
@@ -78,6 +106,18 @@ const JoinUs = () => {
 
         <form className="join-form" onSubmit={handleSubmit}>
           <h2>Apply Now</h2>
+
+          {submitStatus.success && (
+            <div className="success-message">
+              Thank you for your application! We'll get back to you soon.
+            </div>
+          )}
+
+          {submitStatus.error && (
+            <div className="error-message">
+              {submitStatus.error}
+            </div>
+          )}
 
           <div className="form-group">
             <label htmlFor="name">Name</label>
@@ -145,8 +185,12 @@ const JoinUs = () => {
             />
           </div>
 
-          <button type="submit" className="submit-button">
-            Submit Application
+          <button
+            type="submit"
+            className="submit-button"
+            disabled={submitStatus.loading}
+          >
+            {submitStatus.loading ? 'Submitting...' : 'Submit Application'}
           </button>
         </form>
       </div>

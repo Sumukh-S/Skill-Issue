@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import DeveloperController from '../controllers/DeveloperController.js';
+
 const router = express.Router();
-const DeveloperController = require('../controllers/DeveloperController');
 
 // Debug log to check what's being imported
 console.log('DeveloperController:', DeveloperController);
@@ -10,21 +11,19 @@ router.get('/test', (req, res) => {
     res.json({ message: 'Test route working' });
 });
 
-// Main routes with proper error handling
-router.get('/', async (req, res) => {
-    try {
-        const developers = await DeveloperController.getAllDevelopers(req, res);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+// Get all developers
+router.get('/', DeveloperController.getAllDevelopers);
 
-router.post('/', async (req, res) => {
-    try {
-        const newDeveloper = await DeveloperController.createDeveloper(req, res);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-});
+// Get a single developer by ID
+router.get('/:id', DeveloperController.getDeveloperById);
 
-module.exports = router;
+// Create a new developer
+router.post('/', DeveloperController.createDeveloper);
+
+// Update a developer
+router.put('/:id', DeveloperController.updateDeveloper);
+
+// Delete a developer
+router.delete('/:id', DeveloperController.deleteDeveloper);
+
+export default router;

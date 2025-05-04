@@ -1,43 +1,21 @@
-const express = require('express');
+import express from 'express';
+import TeamController from '../controllers/TeamController.js';
+
 const router = express.Router();
-const Team = require('../models/Team');
 
 // Get all team members
-router.get('/', async (req, res) => {
-    try {
-        const team = await Team.find().sort({ createdAt: -1 });
-        res.json(team);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+router.get('/', TeamController.getAllTeams);
 
-// Add a team member
-router.post('/', async (req, res) => {
-    console.log('Received request body:', req.body);
+// Get a single team member by ID
+router.get('/:id', TeamController.getTeamById);
 
-    const teamMember = new Team({
-        name: req.body.name,
-        role: req.body.role,
-        bio: req.body.bio,
-        image: req.body.image,
-        socialLinks: {
-            github: req.body.socialLinks?.github,
-            linkedin: req.body.socialLinks?.linkedin,
-            twitter: req.body.socialLinks?.twitter
-        }
-    });
+// Create a new team member
+router.post('/', TeamController.createTeam);
 
-    try {
-        const newTeamMember = await teamMember.save();
-        res.status(201).json(newTeamMember);
-    } catch (error) {
-        console.error('Error saving team member:', error);
-        res.status(400).json({
-            message: error.message,
-            details: error.errors
-        });
-    }
-});
+// Update a team member
+router.put('/:id', TeamController.updateTeam);
 
-module.exports = router;
+// Delete a team member
+router.delete('/:id', TeamController.deleteTeam);
+
+export default router;

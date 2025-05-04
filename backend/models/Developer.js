@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const DeveloperSchema = new mongoose.Schema({
+const developerSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
@@ -20,4 +20,4 @@ const DeveloperSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Developer', DeveloperSchema);
+export default mongoose.model('Developer', developerSchema);

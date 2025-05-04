@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import '../styles/components/Team.css';
 
 const Team = () => {
@@ -13,9 +13,7 @@ const Team = () => {
 
   const fetchTeam = async () => {
     try {
-      // This will work both locally and in production
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const response = await axios.get(`${API_URL}/api/team`);
+      const response = await api.get('/team');
       console.log('Team data:', response.data);
       setTeam(response.data);
       setLoading(false);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import '../styles/components/Announcements.css';
 
 const Announcements = () => {
@@ -14,8 +14,7 @@ const Announcements = () => {
 
   const fetchAnnouncements = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const response = await axios.get(`${API_URL}/api/announcements`);
+      const response = await api.get('/announcements');
       setAnnouncements(response.data);
       setLoading(false);
     } catch (err) {

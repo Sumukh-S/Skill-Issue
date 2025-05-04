@@ -1,6 +1,8 @@
-const mongoose = require('mongoose');
-const Team = require('../models/Team');
-require('dotenv').config();
+import mongoose from 'mongoose';
+import Team from '../models/Team.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Example team members data
 const teamMembers = [
@@ -75,9 +77,10 @@ const teamMembers = [
         }
     }
 ];
+
 async function addTeamMembers() {
     try {
-        await mongoose.connect(process.env.MONGODB_URI);
+        await mongoose.connect(process.env.MONGO_URI);
         console.log('Connected to MongoDB');
 
         // Clear existing team members
@@ -89,7 +92,7 @@ async function addTeamMembers() {
     } catch (error) {
         console.error('Error adding team members:', error);
     } finally {
-        mongoose.disconnect();
+        await mongoose.disconnect();
     }
 }
 

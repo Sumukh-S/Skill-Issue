@@ -1,9 +1,21 @@
-const express = require('express');
+import express from 'express';
+import JoinUsController from '../controllers/JoinUsController.js';
+
 const router = express.Router();
-const JoinUsController = require('../controllers/JoinUsController');
 
+// Get all join requests
 router.get('/', JoinUsController.getAllJoinUsRequests);
-router.post('/', JoinUsController.createJoinUsRequest);
-// Add other routes as needed
 
-module.exports = router;
+// Get a single join request by ID
+router.get('/:id', JoinUsController.getJoinUsRequestById);
+
+// Create a new join request
+router.post('/', JoinUsController.createJoinUsRequest);
+
+// Update a join request
+router.put('/:id', JoinUsController.updateJoinUsRequest);
+
+// Delete a join request
+router.delete('/:id', JoinUsController.deleteJoinUsRequest);
+
+export default router;

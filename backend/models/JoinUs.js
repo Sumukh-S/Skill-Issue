@@ -1,9 +1,28 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const JoinUsSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  message: String
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  role: {
+    type: String,
+    enum: ['member', 'developer', 'designer', 'mentor'],
+    default: 'member'
+  },
+  interests: [{
+    type: String
+  }],
+  message: {
+    type: String,
+    required: true
+  }
+}, {
+  timestamps: true
 });
 
-module.exports = mongoose.model('JoinUs', JoinUsSchema);
+export default mongoose.model('JoinUs', JoinUsSchema);
