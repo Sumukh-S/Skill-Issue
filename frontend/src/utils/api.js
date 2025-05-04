@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Ensure the API URL always includes /api
+// In production, this will be your Vercel backend URL
 const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 const API_URL = `${BASE_URL}/api`;
 
